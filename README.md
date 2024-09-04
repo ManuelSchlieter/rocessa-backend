@@ -24,6 +24,7 @@
 Server will be available at `http://localhost:8080` which opens the Swagger UI to interact with the API
 
 ## Potential improvements
+- separate request and response dtos for cleaner api 
 - extract the csv parsing logic to a separate service
 - more resilient csv parsing, invalid entries are just skipped and logged
 - use an enum for colors instead of string, to support i18n
