@@ -30,4 +30,9 @@ public class PersonsServiceImpl implements PersonsService {
     public List<Person> getPersonsByColor(String color) {
         return personsRepository.getPersonsByColor(color);
     }
+
+    @Override
+    public Person createPerson(Person person) {
+        return personsRepository.createPerson(person);
+    }
 }

@@ -11,4 +11,6 @@ public interface PersonsService {
 
     List<Person> getPersonsByColor(String color);
 
+    Person createPerson(Person person);
+
 }

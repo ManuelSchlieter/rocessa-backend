@@ -13,13 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.rocessa.features.persons.PersonsApiDelegateImpl;
-import org.rocessa.features.persons.PersonsService;
 import org.rocessa.features.persons.models.Person;
 import org.rocessa.model.PersonDto;
 import org.springframework.http.ResponseEntity;
-
-import ch.qos.logback.core.model.Model;
 
 public class PersonsApiDelegateImplTest {
 
@@ -83,7 +79,7 @@ public class PersonsApiDelegateImplTest {
 
         // then
         assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        assertEquals(200, response.getStatusCode().value());
         assertEquals(personDtos, response.getBody());
     }
 
@@ -102,7 +98,7 @@ public class PersonsApiDelegateImplTest {
 
         // then
         assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        assertEquals(200, response.getStatusCode().value());
         assertEquals(personDto1, response.getBody());
     }
 
@@ -116,7 +112,7 @@ public class PersonsApiDelegateImplTest {
 
         // then
         assertNotNull(response);
-        assertEquals(404, response.getStatusCode());
+        assertEquals(404, response.getStatusCode().value());
     }
 
     @Test
@@ -143,7 +139,7 @@ public class PersonsApiDelegateImplTest {
 
         // then
         assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        assertEquals(200, response.getStatusCode().value());
         assertEquals(personDtos, response.getBody());
     }
 
@@ -171,8 +167,41 @@ public class PersonsApiDelegateImplTest {
 
         // then
         assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        assertEquals(200, response.getStatusCode().value());
         assertEquals(personDtos, response.getBody());
+    }
+
+    @Test
+    public void when_CreatePerson_ok() {
+        // given
+        PersonDto personDto1 = createPerson1Dto();
+        Person person1 = createPerson1();
+
+        // mock
+        when(personApiDelegate.convertToModel(personDto1)).thenReturn(person1);
+        when(personService.createPerson(person1)).thenReturn(person1);
+        when(personApiDelegate.convertToDto(person1)).thenReturn(personDto1);
+
+        // when
+        ResponseEntity<PersonDto> response = personApiDelegate.createPerson(personDto1);
+
+        // then
+        assertNotNull(response);
+        assertEquals(201, response.getStatusCode().value());
+        assertEquals(personDto1, response.getBody());
+    }
+
+    @Test
+    public void when_CreatePerson_unsupportedColor_fail() {
+        // given
+        PersonDto personDto1 = createPerson1Dto();
+        personDto1.setColor("pink");
+
+        // when
+        ResponseEntity<PersonDto> response = personApiDelegate.createPerson(personDto1);
+
+        // then
+        assertEquals(400, response.getStatusCode().value());
     }
 
     Person createPerson1() {

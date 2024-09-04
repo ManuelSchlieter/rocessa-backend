@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.rocessa.features.persons.models.Colors;
 import org.rocessa.features.persons.models.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,15 +25,6 @@ import jakarta.annotation.PostConstruct;
 @Repository
 public class PersonsRepositoryCsv implements PersonsRepository {
     private static final Logger logger = LoggerFactory.getLogger(PersonsRepositoryCsv.class);
-
-    Map<String, String> idToColorMap = Map.of(
-            "1", "blau",
-            "2", "grün",
-            "3", "violett",
-            "4", "rot",
-            "5", "gelb",
-            "6", "türkis",
-            "7", "weiß");
 
     ResourceLoader resourceLoader;
     List<Person> persons = new ArrayList<>();
@@ -63,7 +55,7 @@ public class PersonsRepositoryCsv implements PersonsRepository {
     @Override
     public List<Person> getPersonsByColor(String color) {
         return persons.stream()
-                .filter(person -> person.getColor() == color)
+                .filter(person -> color.equals(person.getColor()))
                 .toList();
     }
 
@@ -99,7 +91,7 @@ public class PersonsRepositoryCsv implements PersonsRepository {
 
         entry = trimEntries(entry);
 
-        var color = idToColorMap.get(entry[3]);
+        var color = Colors.idToColorMap.get(entry[3]);
         if (color == null) {
             logger.warn("Malformed color entry, skipping " + Arrays.toString(entry));
             return null;
@@ -126,5 +118,20 @@ public class PersonsRepositoryCsv implements PersonsRepository {
         return Arrays.stream(entry)
                 .map(String::trim)
                 .toArray(String[]::new);
+    }
+
+    @Override
+    public Person createPerson(Person person) {
+        person.setId(findNextId());
+        persons.add(person);
+        return person;
+    }
+
+    int findNextId() {
+        return persons.stream()
+                .map(Person::getId)
+                .max(Integer::compareTo)
+                .map(id -> id + 1)
+                .orElse(1);
     }
 }

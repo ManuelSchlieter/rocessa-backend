@@ -27,6 +27,36 @@ paths:
       summary: Get all persons
       x-accepts:
       - application/json
+    post:
+      operationId: createPerson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+          description: Person created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid input
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal server error
+      summary: Create a new person
+      x-accepts:
+      - application/json
   /persons/{id}:
     get:
       operationId: getPersonById

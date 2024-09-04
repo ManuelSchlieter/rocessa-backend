@@ -13,4 +13,6 @@ public interface PersonsRepository {
     Person getPersonById(int id);
 
     List<Person> getPersonsByColor(String color);
+
+    Person createPerson(Person person);
 }

@@ -1,10 +1,13 @@
 package org.rocessa.features.persons;
 
+import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.rocessa.api.PersonsApiDelegate;
+import org.rocessa.features.persons.models.Colors;
 import org.rocessa.features.persons.models.Person;
 import org.rocessa.model.PersonDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,15 +47,34 @@ public class PersonsApiDelegateImpl implements PersonsApiDelegate {
 
     @Override
     public ResponseEntity<List<PersonDto>> getPersonsByColor(String color) {
-        List<PersonDto> result = this.personService.getPersonsByColor(color)
-                .stream()
+        List<PersonDto> result = this.personService.getPersonsByColor(color).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(result);
     }
 
+    @Override
+    public ResponseEntity<PersonDto> createPerson(PersonDto personDto) {
+        if (!Colors.colors.contains(personDto.getColor())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var person = convertToModel(personDto);
+        var createdPerson = personService.createPerson(person);
+
+        if (createdPerson == null) {
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.status(201).body(convertToDto(createdPerson));
+    }
+
     public PersonDto convertToDto(Person person) {
-        return modelMapper.map(person, PersonDto.class);
+        var m = modelMapper.map(person, PersonDto.class);
+        return m;
+    }
+
+    public Person convertToModel(PersonDto personDto) {
+        return modelMapper.map(personDto, Person.class);
     }
 
 }
