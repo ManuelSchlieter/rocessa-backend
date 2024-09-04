@@ -1,3 +1,30 @@
+# Approach to solve the challenge
+
+## Environment
+- VSCode devcontainer is used to manage Java environment and to develop the solution
+
+## Tools
+- OpenAPI 3.0 is used to define the API contract. The contract is defined in `src/main/resources/openapi.yaml`
+- Spring Boot is used to implement the API endpoints
+- Swagger UI is used to visualize and interact with the API resources
+
+## Solution
+- API first approach is used to solve the challenge
+- API contract is used to generate the server code using the openapi-generator-maven-plugin
+- generated server code sets up the project, maven dependencies, and the API endpoints using the delegate pattern
+- vertical slice architecture is used to implement the API endpoints and will be kept under `src/main/java/org/rocessa/features` package
+- slices contain the api delegate, service, models and repositories
+- layers are decoupled by interfaces, dependency injection simplifies testing and mocking
+- each layer comes with their respective unit tests, when applicable
+
+## Execution
+- run `mvn clean install` to build the project
+- run `mvn spring-boot:run` to start the server
+
+Server will be available at `http://localhost:8080` which opens the Swagger UI to interact with the API
+
+-------------------------------------------------------
+
 # OpenAPI generated server
 
 Spring Boot Server
@@ -20,6 +47,7 @@ http://localhost:8080/swagger-ui.html
 
 Change default port value in application.properties
 
+-------------------------------------------------------
 
 # Assecor Assessment Test (DE)
 
