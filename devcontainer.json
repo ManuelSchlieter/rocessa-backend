@@ -1,0 +1,29 @@
+{
+  "name": "Java SE 21 Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/java:21",
+  "settings": {
+    "java.home": "/usr/local/openjdk-21",
+    "java.configuration.runtimes": [
+      {
+        "name": "JavaSE-21",
+        "path": "/usr/local/openjdk-21",
+        "default": true
+      }
+    ]
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18"
+    }
+  },
+  "extensions": [
+    "vscjava.vscode-java-pack",
+    "redhat.vscode-yaml"
+  ],
+  "postCreateCommand": "mvn clean install",
+  "forwardPorts": [
+    8080,
+    4200
+  ],
+  "remoteUser": "vscode"
+}

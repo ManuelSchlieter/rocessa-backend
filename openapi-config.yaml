@@ -1,0 +1,11 @@
+additionalProperties:
+  artifactId: fullstack
+  groupId: org.rocessa
+  delegatePattern: true
+  apiFirst: true
+  useSpringBoot3: true
+
+modelPackage: org.rocessa.model
+apiPackage: org.rocessa.api
+invokerPackage: org.rocessa
+
