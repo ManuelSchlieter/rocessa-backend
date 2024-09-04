@@ -13,7 +13,7 @@
 - API contract is used to generate the server code using the openapi-generator-maven-plugin
 - generated server code sets up the project, maven dependencies, and the API endpoints using the delegate pattern
 - vertical slice architecture is used to implement the API endpoints and will be kept under `src/main/java/org/rocessa/features` package
-- slices contain the api delegate, service, models and repositories
+- slices contain the api delegates, services, models and repositories
 - layers are decoupled by interfaces, dependency injection simplifies testing and mocking
 - each layer comes with their respective unit tests, when applicable
 
@@ -22,6 +22,16 @@
 - run `mvn spring-boot:run` to start the server
 
 Server will be available at `http://localhost:8080` which opens the Swagger UI to interact with the API
+
+## Potential improvements
+- extract the csv parsing logic to a separate service
+- more resilient csv parsing, invalid entries are just skipped and logged
+- use an enum for colors instead of string, to support i18n
+- add more unit tests to cover edge cases
+- add integration tests to cover the whole application
+
+## THANK YOU FOR THE OPPORTUNITY ##
+- See you soon!
 
 -------------------------------------------------------
 
